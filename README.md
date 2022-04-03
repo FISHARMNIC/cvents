@@ -25,7 +25,7 @@ Events are represented with functions
 * The function must be a single keypress function
 * Example: `use_key('a', key_a_event)`
 
-## `use_global( void *function)`
+### `use_global( void *function)`
 * Binds any keypress to a function
 * The function must be a global keypress function
 * Example: `use_global(global_event)`
