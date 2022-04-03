@@ -18,28 +18,25 @@ char __use_global_event__ = 0;
 void *__global_trigger__;
 int __num_events__;
 
-static struct termios oldt, newt;
+static struct termios __oldt__, __newt__;
 typedef void void_void_func_ptr_t(void);
 typedef void void_char_func_ptr_t(char);
 
 #define TERM_EVENT pthread_exit(NULL)
 
-// activate the special terminal
-#define KEY_INIT_ENTER ({                    \
-    tcgetattr(STDIN_FILENO, &oldt);          \
-    newt = oldt;                             \
-    newt.c_lflag &= ~(ICANON);               \
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt); \
+// activate the special interface
+#define KEY_INIT_ENTER() ({                      \
+    tcgetattr(STDIN_FILENO, &__oldt__);          \
+    __newt__ = __oldt__;                         \
+    __newt__.c_lflag &= ~(ICANON);               \
+    tcsetattr(STDIN_FILENO, TCSANOW, &__newt__); \
 })
 
-// restore the normal interface
-#define KEY_INIT_EXIT_2 ({ tcsetattr(STDIN_FILENO, TCSANOW, &oldt); })
-
 // activate the key press events
-#define KEY_INIT_EXIT ({                                   \
-    pthread_t thread;                                      \
-    pthread_create(&thread, NULL, kb_event_handler, NULL); \
-    KEY_INIT_EXIT_2;                                       \
+#define KEY_INIT_EXIT() ({                                     \
+    pthread_t thread;                                          \
+    pthread_create(&thread, NULL, __kb_event_handler__, NULL); \
+    tcsetattr(STDIN_FILENO, TCSANOW, &__oldt__);               \
 })
 
 void use_key(char key, void *handler)
@@ -55,12 +52,13 @@ void use_global(void *handler)
     __global_trigger__ = handler;
 }
 
-void *kb_event_handler(void *arg)
+void *__kb_event_handler__(void *arg)
 {
     char gotten;
     while (1)
     {
-        while ((gotten = getchar()) == 0);
+        while ((gotten = getchar()) == 0)
+            ;
 
         // if you are using a global triger
         if (__global_trigger__)

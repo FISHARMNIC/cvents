@@ -18,7 +18,7 @@ void global_event(char c)
 
 void initiate_keys()
 {
-    KEY_INIT_ENTER;
+    KEY_INIT_ENTER();
 
     /* Here are your events */
     use_key('a', key_a_event);
@@ -27,7 +27,7 @@ void initiate_keys()
     use_global(global_event);
     /* ------------ */
 
-    KEY_INIT_EXIT;
+    KEY_INIT_EXIT();
 }
 
 int main()
@@ -39,6 +39,6 @@ int main()
         printf("%i\n",i);
         sleep(1);
     }
-    pthread_exit(NULL);
+    
     return 0;
 }
