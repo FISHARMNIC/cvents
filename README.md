@@ -4,7 +4,7 @@ A simple demonstration is found in `main.c`
 
 ---
 
-## Setting Up Events
+## Creating Events
 Events are represented with functions  
 ### Single Keypress Functions
 * Normal events do not return a value and take no parameters 
@@ -14,7 +14,7 @@ Events are represented with functions
 	* The character is the key that was pressed
 * `void trigger(char ch) {...}`
 
-## Creating Events
+## Setting Up Events
 ### `KEY_INIT_ENTER()`
 * Execute this before setting up your events
 ### `KEY_INIT_EXIT()`
