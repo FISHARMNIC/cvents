@@ -15,6 +15,8 @@ Events are represented with functions
 * Global events do not return a value but take a character
 	* The character is the key that was pressed
 * `void trigger(char ch) {...}`
+### `TERM_MT()`
+* Reccommended to be used at the end of a multithreaded single keypress function
 
 ## Setting Up Events
 ### `KEY_INIT_ENTER()`
@@ -22,8 +24,6 @@ Events are represented with functions
 ### `KEY_INIT_EXIT()`
 * Execute this after setting up your events
 
-### `TERM_MT()`
-* Reccommended to be used at the end of a multithreaded keypress function
 
 ### `use_key(char key, void *function, <optional> thread)`
 * Binds a keypress to a function
