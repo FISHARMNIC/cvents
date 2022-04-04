@@ -1,6 +1,8 @@
 # keyvents 
 A key press event library for C  
 A simple demonstration is found in `main.c`
+Note: this is meant to be ran in unix/linux/macos systems, I have not tested it on windows
+Supports the BASH shell
 
 ---
 
@@ -32,6 +34,9 @@ Events are represented with functions
 * Example: `use_key('a', key_a_event)`
 
 ### `use_global( void *function)`
-* Binds any keypress to a function
+* Triggers a function when any key is pressed
 * The function must be a global keypress function
 * Example: `use_global(global_event)`
+
+---
+
