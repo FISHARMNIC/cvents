@@ -1,7 +1,7 @@
 # keyvents 
 A key press event library for C  
 A simple demonstration is found in `main.c`
-Note: this is meant to be ran in unix/linux/macos systems, I have not tested it on windows
+Note: this is meant to be ran in unix/linux/macos systems, I have not tested it on windows  
 Supports the BASH shell
 
 ---
