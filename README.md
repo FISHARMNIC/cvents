@@ -33,7 +33,7 @@ Events are represented with functions
 	* By default, the trigger will *not* be multithreaded
 * Example: `use_key('a', key_a_event)`
 
-### `use_global( void *function)`
+### `use_global(void *function)`
 * Triggers a function when any key is pressed
 * The function must be a global keypress function
 * Example: `use_global(global_event)`
