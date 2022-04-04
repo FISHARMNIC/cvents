@@ -28,11 +28,10 @@ Events are represented with functions
 * The function must be a single keypress function
 * `thread` specifies if you want the event to run on a seperate thread (optional)
 	* Use `USE_MT` or `NO_MT`
+	* By default, the trigger will *not* be multithreaded
 * Example: `use_key('a', key_a_event)`
 
 ### `use_global( void *function)`
 * Binds any keypress to a function
 * The function must be a global keypress function
-* `thread` specifies if you want the event to run on a seperate thread (optional)
-	* Use `USE_MT` or `NO_MT`
 * Example: `use_global(global_event)`
