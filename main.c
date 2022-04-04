@@ -4,7 +4,6 @@
 void key_a_event()
 {
     printf("private handler apples\n");
-    TERM_MT();
 }
 
 void key_b_event()
@@ -40,7 +39,7 @@ int main()
 {
     initiate_keys();
 
-    // to show how it is multi-threaded
+    // to show how the key presses do not block the main execution
     for(int i = 0;;i++) {
         printf("--TIMESTAMP: %i\n",i);
         sleep(1);

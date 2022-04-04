@@ -84,13 +84,14 @@ void *__kb_event_handler__(void *arg)
         if (__global_trigger__)
             ((void_char_func_ptr_t *)(__global_trigger__))(gotten);
 
+
         // for each bound event
         pthread_t threads[__num_events__];
         for (int i = 0; i < __num_events__; i++)
             // if I bound this key
             if (gotten == __keys_used__[i])
             {
-                if (__use_multithread__[i] != NO_MT)
+                if (__use_multithread__[i] == USE_MT)
                     pthread_create(&threads[i], NULL, (__key_events__[__keys_used__[i]]), NULL);
                 else
                     ((void_void_func_ptr_t *)(__key_events__[__keys_used__[i]]))();
