@@ -29,10 +29,9 @@ static struct termios __oldt__, __newt__;
 typedef void void_void_func_ptr_t(void);
 typedef void void_char_func_ptr_t(char);
 
-#define TERM_MT()           \
-    {                       \
+#define TERM_MT() ({        \
         pthread_exit(NULL); \
-    }
+    })
 
 #define USE_MT 0
 #define NO_MT 1
