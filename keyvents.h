@@ -29,9 +29,10 @@ static struct termios __oldt__, __newt__;
 typedef void void_void_func_ptr_t(void);
 typedef void void_char_func_ptr_t(char);
 
-#define TERM_MT() ({        \
+#define TERM_MT()           \
+    {                       \
         pthread_exit(NULL); \
-    })
+    }
 
 #define USE_MT 0
 #define NO_MT 1
@@ -40,7 +41,7 @@ typedef void void_char_func_ptr_t(char);
 #define KEY_INIT_ENTER() ({                      \
     tcgetattr(STDIN_FILENO, &__oldt__);          \
     __newt__ = __oldt__;                         \
-    __newt__.c_lflag &= ~(ICANON);               \
+    __newt__.c_lflag &= ~(ICANON | ECHO); \
     tcsetattr(STDIN_FILENO, TCSANOW, &__newt__); \
 })
 
@@ -48,7 +49,6 @@ typedef void void_char_func_ptr_t(char);
 #define KEY_INIT_EXIT() ({                                         \
     pthread_t __thread__;                                          \
     pthread_create(&__thread__, NULL, __kb_event_handler__, NULL); \
-    tcsetattr(STDIN_FILENO, TCSANOW, &__oldt__);                   \
 })
 
 void use_key(char key, void *handler, ...)
@@ -76,13 +76,12 @@ void *__kb_event_handler__(void *arg)
         while ((gotten = getchar()) == 0)
             ;
 
-        //"unprint" the printed character
+        //"unprint" the newline created by the terminal
         printf("\33[2K\33[A\r");
 
         // if you are using a global triger
         if (__global_trigger__)
             ((void_char_func_ptr_t *)(__global_trigger__))(gotten);
-
 
         // for each bound event
         pthread_t threads[__num_events__];
