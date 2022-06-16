@@ -1,5 +1,4 @@
 #include "keyvents.h"
-#include <unistd.h>
 
 void key_a_event()
 {
@@ -15,9 +14,17 @@ void key_c_event()
 {
     printf("private handler chicken\n");
 }
+
+void exit_event()
+{
+    printf("--exit--\n");
+    PROGRAM_EXIT();
+}
+
+
 void global_event(char c)
 {
-    printf("\nglobal handler: %c\n", c);
+    printf("\nglobal handler: %i\n", c);
 }
 
 void initiate_keys()
@@ -28,6 +35,7 @@ void initiate_keys()
     use_key('a', key_a_event, USE_MT);
     use_key('b', key_b_event, NO_MT);
     use_key('c', key_c_event);
+    use_key(27, exit_event); //exit program
     //activate a global event
     use_global(global_event);
     /* ------------ */

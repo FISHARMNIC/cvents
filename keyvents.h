@@ -6,50 +6,58 @@
 #include <stdarg.h>
 #endif
 
-#ifndef PTHREAD_H
+#ifndef STDLIB_H
+#include <stdlib.h>
+#endif
+
 #include <pthread.h>
-#endif
-
-#ifndef TERMIOS_H
 #include <termios.h>
-#endif
+#include <unistd.h>
 
-static void *__key_events__[255];
-static char __keys_used__[255];
-static char __use_multithread__[255];
-static int __use_key__ = 0;
-
-static char __use_global_event__ = 0;
-static void *__global_trigger__;
-static int __num_events__;
-
-// static char __use_multithread__ = 1;
-
-static struct termios __oldt__, __newt__;
 typedef void void_void_func_ptr_t(void);
 typedef void void_char_func_ptr_t(char);
 
-#define TERM_MT()           \
-    {                       \
-        pthread_exit(NULL); \
-    }
+void *__key_events__[255];
+char __keys_used__[255];
+char __use_multithread__[255];
+int __use_key__ = 0;
+
+char __use_global_event__ = 0;
+void *__global_trigger__;
+int __num_events__;
+
+struct termios __oldt__, __newt__;
 
 #define USE_MT 0
 #define NO_MT 1
 
+void *__kb_event_handler__(void *arg);
+void KEY_INIT_ENTER();
+void KEY_INIT_EXIT();
+void PROGRAM_EXIT();
+void use_key(char key, void *handler, ...);
+void use_global(void *handler);
+
+// Exit the multithreaded event
+void TERM_MT() {pthread_exit(NULL);}
+
 // activate the special interface
-#define KEY_INIT_ENTER() ({                      \
-    tcgetattr(STDIN_FILENO, &__oldt__);          \
-    __newt__ = __oldt__;                         \
-    __newt__.c_lflag &= ~(ICANON | ECHO); \
-    tcsetattr(STDIN_FILENO, TCSANOW, &__newt__); \
-})
+void KEY_INIT_ENTER()
+{
+    tcgetattr(STDIN_FILENO, &__oldt__);
+    __newt__ = __oldt__;
+    __newt__.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &__newt__);
+}
 
 // activate the key press events
-#define KEY_INIT_EXIT() ({                                         \
-    pthread_t __thread__;                                          \
-    pthread_create(&__thread__, NULL, __kb_event_handler__, NULL); \
-})
+void KEY_INIT_EXIT()
+{
+    pthread_t __thread__;
+    pthread_create(&__thread__, NULL, __kb_event_handler__, NULL);
+}
+
+void PROGRAM_EXIT() { tcsetattr(STDIN_FILENO, TCSANOW, &__oldt__); exit(0);}
 
 void use_key(char key, void *handler, ...)
 {
